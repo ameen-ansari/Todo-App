@@ -1,0 +1,27 @@
+.todoparent {
+  width: 100vw;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: lightgrey;
+}
+.todoparent2 {
+  background-color: lightgrey;
+  width: 90vw;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.todoparent3 {
+  background-color: lightgrey;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.todoparent2 > div {
+  border: 3px solid black;
+  width: 45%;
+}

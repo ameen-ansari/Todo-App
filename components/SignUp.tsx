@@ -1,18 +1,8 @@
 import { useState } from "react";
 import logincss from "/styles/SignUp.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import { Button } from '@mui/material'
-// import img1 from '../Images/fb.png'
-// import img3 from '../Images/Group 50.png'
-// import img4 from '../Images/iph.png'
-// import { Link, useNavigate } from "react-router-dom";
-// import { auth } from "../Firebase"
-// import { createUserWithEmailAndPassword } from 'firebase/auth'
-// import { db } from '../Firebase'
-// import { addDoc, collection } from 'firebase/firestore'
 
 export default function SignUp() {
-  // let navigate = useNavigate()
   let [values, setvalues] = useState({
     email: "",
     userName: "",
