@@ -33,14 +33,14 @@
   border: 0;
   outline: 0;
 }
-.manager span {
+/* .manager span {
   width: 10%;
   text-align: center;
   font-size: 45px;
   font-weight: bold;
   color: #ffffff;
   cursor: pointer;
-}
+} */
 
 .todos {
   display: flex;
@@ -69,12 +69,22 @@
   gap: 1rem; 
   width: 20%;
 }
-.todos > div > div span {
+/* .todos > div > div span {
   text-align: center;
   background-color: #d8e5f7;
   width: 50%;
   border-radius: 50%;
   cursor: pointer;
+} */
+.manager button {
+  width: 20%;
+  height: 100%;
+  font-size: 32px;
+  background-color: rgb(92, 133, 217);
+  color: #ffffff;
+  font-weight: 600;
+  border: 0;
+  border-radius: 10px;
 }
 
 .hr {
@@ -84,7 +94,7 @@
   border: 0;
 }
 
-.todo button {
+.todo > button {
   padding: 5px 45px;
   font-size: 18px;
   background-color: rgb(162, 199, 236);
@@ -158,9 +168,9 @@ input.checkb {
     border: 0;
     outline: 0;
   }
-  .manager span {
+  /* .manager span {
     width: 20%;
-  }
+  } */
   .inmap {
     gap: 1rem;
   }
