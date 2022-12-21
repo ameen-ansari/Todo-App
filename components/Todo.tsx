@@ -40,6 +40,10 @@ export default function Home() {
     setDoneTodos([]);
   };
 
+  let a  = () =>{
+    return new Date()
+  }
+let dt:object = a()
   return (
     <div className={styles.parent}>
       <div className={styles.todo}>
