@@ -138,13 +138,13 @@ input.checkb {
 }
 @media (max-width: 600px) {
   .todo{
-    width: 90%;
+    width: 100%;
   }
   .todos > div {
     padding: 1rem;
     border-radius: 6px;
     background-color: #ffffff;
-    width: 90vw;
+    width: 95vw;
     display: flex;
     justify-content: space-between;
   }
