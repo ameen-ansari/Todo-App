@@ -9,6 +9,7 @@ import {
   where,
   deleteDoc,
   doc,
+  updateDoc,
 } from "firebase/firestore";
 import img1 from "/Images/edit.png";
 import img2 from "/Images/cancel (1).png";
@@ -16,100 +17,184 @@ import Image from "next/image";
 import { db } from "../config/Firebase";
 
 export default function Home() {
-  const [ldg, setldg] = useState<any>(false);
-  const [data, setdata] = useState<any>([]);
-  const [userInput, setUserInput] = useState<any>({
-    description: "",
-    id: Date.now(),
-  });
+  const [loader, setLoader] = useState<boolean>(false);
+  const [input, setinput] = useState<string>("");
+  const [uid, setuid] = useState<string>("");
+  const [userData, setUserData] = useState<any>([]);
+
   const [doneTodos, setDoneTodos] = useState<any>([]);
+
+  const save = async () => {
+    let saveBtn: any = document.getElementById("savebtn1");
+    if (input.length > 0) {
+      try {
+        saveBtn.disabled = true;
+        addDoc(collection(db, "userData"), {
+          description: input,
+          status: false,
+        }).then((doc1) => {
+          setuid(doc1.id);
+          setUserData([
+            ...userData,
+            {
+              description: input,
+              id: doc1.id,
+              status: false,
+            },
+          ]);
+          const washingtonRef = doc(db, "userData", doc1.id);
+          updateDoc(washingtonRef, {
+            id: doc1.id,
+          });
+        });
+      } catch (error) {
+        alert(error);
+      } finally {
+        saveBtn.disabled = false;
+        setinput("");
+      }
+    } else {
+      alert("Invalid Input");
+    }
+  };
+  // let updatebtn1 = document.getElementById("updatebtn1");
+
   useEffect(() => {
     try {
-      let gdata = async () => {
-        let arr1: any = [];
-        let QS = await getDocs(collection(db, "UserData"));
-        QS.forEach((doc) => {
-          arr1.push(doc.data());
+      getDocs(collection(db, "userData")).then((Q) => {
+        setLoader(true);
+        let arr: any = [];
+        Q.forEach((doc) => {
+          arr.push(doc.data());
+          setUserData(arr);
         });
-        setdata([...arr1]);
-        setldg(true);
-      };
-      gdata();
-    } catch (err) {
-      alert(err);
+      });
+    } catch (error) {
+      alert(error);
     } finally {
-      setldg(false);
+      setLoader(false);
     }
   }, []);
-  const save = async (e: any) => {
-    try {
-      await addDoc(collection(db, "UserData"), userInput);
-
-      e.target.disabled = true;
-    } catch (err) {
-      alert(err);
-    } finally {
-      e.target.disabled = false;
-    }
-    setdata([...data, userInput]);
-    setUserInput({
-      description: "",
-      id: "",
-    });
-  };
-
   let cancel = async (e: any) => {
-    let rmdoc = "";
-    let q = query(collection(db, "UserData"), where("id", "==", e.id));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      rmdoc = doc.id;
+    await deleteDoc(doc(db, "userData", e.id));
+    let arr: any = [];
+    userData.forEach((elem: any) => {
+      if (elem.id !== e.id) {
+        arr.push(elem);
+        setUserData(arr);
+      }
+      if (userData.length === 1) {
+        setUserData([]);
+      }
     });
-    await deleteDoc(doc(db, "UserData", rmdoc));
-    let QS = await getDocs(collection(db, "UserData"));
-    QS.forEach((docmt) => {
-      let arr1 = [];
-      arr1.push(docmt.data());
-      setdata(arr1);
-    });
-    if (data.length === 1) {
-      setdata([]);
+  };
+
+  let checked = async (e: any) => {
+    let savebtn1: any = document.getElementById("savebtn1");
+    let updatebtn1: any = document.getElementById("updatebtn1");
+    savebtn1.style.display = "none";
+    updatebtn1.style.display = "block";
+    setinput(e.description);
+    setuid(e.id);
+  };
+
+  let updateD = async () => {
+    let savebtn1: any = document.getElementById("savebtn1");
+    let updatebtn1: any = document.getElementById("updatebtn1");
+    try {
+      userData.forEach((element: any) => {
+        if (element.id === uid) {
+          element.description = input;
+        }
+      });
+      let QQ = doc(db, "userData", uid);
+      await updateDoc(QQ, {
+        description: input,
+      });
+      savebtn1.disabled = true;
+    } catch (error) {
+      alert(error);
+    } finally {
+      savebtn1.style.display = "block";
+      updatebtn1.style.display = "none";
+      savebtn1.disabled = false;
+      setinput("");
     }
   };
-
-  let checked = (e: string) => {
-    console.log(e);
+  let todoChecker = async (e: any) => {
+    let status: boolean = false;
+    let checkBI = document.getElementById(e.id);
+    if (checkBI?.checked === true) {
+      let QQ = doc(db, "userData", e.id);
+      await updateDoc(QQ, {
+        status: true,
+      });
+    } else {
+      let QQ = doc(db, "userData", e.id);
+      await updateDoc(QQ, {
+        status: false,
+      });
+    }
+    let arr:any = []
+    userData.forEach((elem:any) => {
+      if (elem.id === e.id ) {
+        if (elem.status === true) {
+          elem.status = false
+        }else{
+          elem.status = true
+        }
+        arr.push(elem)
+        setUserData(arr)
+      }else{
+        arr.push(elem)
+        setUserData(arr)
+      }
+    });
   };
-
-  let reset = () => {};
-  let arr: any = [];
 
   return (
     <div className={styles.parent}>
       <div className={styles.todo}>
         <div className={styles.manager}>
           <input
-            onChange={(e) => {
-              setUserInput({
-                id: Date.now(),
-                description: e.target.value,
-              });
-            }}
-            value={userInput?.description}
             type="text"
             placeholder="Add A Task Here..."
+            onChange={(e) => {
+              setinput(e.target.value);
+            }}
+            value={input}
           />
-          <button id="btn1" onClick={save}>
+          <button id="savebtn1" onClick={save}>
+            +
+          </button>
+          <button
+            id="updatebtn1"
+            className={styles.updatebtn1}
+            onClick={updateD}
+          >
             +
           </button>
         </div>
         <div className={styles.todos}>
-          {data.map((item: any, i: any) => {
+          {loader === false ? (
+            <p>Loading...</p>
+          ) : userData.length == 0 ? (
+            <p>Add Some Now...</p>
+          ) : (
+            <p>Todos</p>
+          )}
+          {userData.map((item: any, i: any) => {
             return (
               <div key={i} className={styles.inmap}>
                 <div className={styles.intodop1}>
                   <div>
-                    <input type="checkbox" className={styles.checkb} />
+                    <input
+                      id={item.id}
+                      onChange={() => todoChecker(item)}
+                      type="checkbox"
+                      className={styles.checkb}
+                      checked={item.status}
+                    />
                     <p>{item?.description}</p>
                   </div>
                   <div>
@@ -158,38 +243,6 @@ export default function Home() {
               </div>
             );
           })}
-          {ldg === true ? <p></p> : <p>Loading...</p>}
-          {/* {data.length === 0 ? <p>{ldg}</p> : <p>{ldg}</p>} */}
-          {/* <hr className={styles.hr} /> */}
-
-          {/* {doneTodos.map((item, i) => {
-            return (
-              <div
-                key={i}
-                style={{
-                  backgroundColor: "rgb(92, 133, 217)",
-                  color: "#FFFFFF",
-                }}
-              >
-                <p>{item}</p>
-                <div>
-                  <span
-                    style={{
-                      backgroundColor: "#FFFFFF",
-                      color: "rgb(92, 133, 217)",
-                    }}
-                  >
-                    &#10004;
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-          {doneTodos.length !== 0 ? (
-            <button onClick={reset}>Clear</button>
-          ) : (
-            <p></p>
-          )} */}
         </div>
       </div>
     </div>

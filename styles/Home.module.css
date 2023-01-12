@@ -17,6 +17,9 @@
   justify-content: flex-start;
   align-items: center;
 }
+.updatebtn1 {
+  display: none;
+}
 .manager {
   background-color: rgb(92, 133, 217);
   width: 100%;
