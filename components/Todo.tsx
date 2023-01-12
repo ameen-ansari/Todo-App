@@ -121,39 +121,61 @@ export default function Home() {
       setinput("");
     }
   };
+  let updatery = async (e: any) => {};
   let todoChecker = async (e: any) => {
-    // let status: boolean = false;
-    // let checkBI = document.getElementById(e.id);
-    // try{
-    //   if (checkBI?.checked === true) {
-    //     let QQ = doc(db, "userData", e.id);
-    //     await updateDoc(QQ, {
-    //       status: true,
-    //     });
-    //   } else {
-    //     let QQ = doc(db, "userData", e.id);
-    //     await updateDoc(QQ, {
-    //       status: false,
-    //     });
-    //   }
-    // }catch(error){
-    //   alert('error in check box',error)
+    // let QQ = doc(db, "userData", e.id);
+    // if (e.target.checked === true) {
+    //   await updateDoc(QQ, {
+    //     status: true,
+    //   });
+    // } else {
+    //   await updateDoc(QQ, {
+    //     status: false,
+    //   });
     // }
-    // let arr:any = []
-    // userData.forEach((elem:any) => {
-    //   if (elem.id === e.id ) {
-    //     if (elem.status === true) {
-    //       elem.status = false
-    //     }else{
-    //       elem.status = true
-    //     }
-    //     arr.push(elem)
-    //     setUserData(arr)
-    //   }else{
-    //     arr.push(elem)
-    //     setUserData(arr)
-    //   }
-    // });
+    // if (e.target.checked === true) {
+    //   let QQ = doc(db, "userData", e.id);
+    //   await updateDoc(QQ, {
+    //     status: true,
+    //   });
+    // } else {
+    // }
+    // let status: boolean = false;
+    // let checkBI: any = document.getElementById(e.id)?.checked;
+    const checkBI = document.querySelector(`#${e.id}`)?.checked
+    try {
+      if (checkBI === true) {
+        console.log('checked');
+        let QQ = doc(db, "userData", e.id);
+        await updateDoc(QQ, {
+          status: true,
+        });
+      } else {
+        console.log('Unchecked');
+        
+        let QQ = doc(db, "userData", e.id);
+        await updateDoc(QQ, {
+          status: false,
+        });
+      }
+    } catch (error) {
+      alert("error in check box");
+    }
+    let arr: any = [];
+    userData.forEach((elem: any) => {
+      if (elem.id === e.id) {
+        if (elem.status === true) {
+          elem.status = false;
+        } else {
+          elem.status = true;
+        }
+        arr.push(elem);
+        setUserData(arr);
+      } else {
+        arr.push(elem);
+        setUserData(arr);
+      }
+    });
   };
 
   return (
@@ -194,10 +216,12 @@ export default function Home() {
                   <div>
                     <input
                       id={item.id}
-                      onChange={() => todoChecker(item)}
+                      onChange={()=>todoChecker(item)}
+                      onInput={() => updatery(item)}
                       type="checkbox"
                       className={styles.checkb}
-                      checked={item.status}
+                      name={item.id}
+                      // checked={item.status}
                     />
                     <p>{item?.description}</p>
                   </div>
