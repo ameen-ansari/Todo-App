@@ -124,16 +124,20 @@ export default function Home() {
   let todoChecker = async (e: any) => {
     let status: boolean = false;
     let checkBI = document.getElementById(e.id);
-    if (checkBI?.checked === true) {
-      let QQ = doc(db, "userData", e.id);
-      await updateDoc(QQ, {
-        status: true,
-      });
-    } else {
-      let QQ = doc(db, "userData", e.id);
-      await updateDoc(QQ, {
-        status: false,
-      });
+    try{
+      if (checkBI?.checked === true) {
+        let QQ = doc(db, "userData", e.id);
+        await updateDoc(QQ, {
+          status: true,
+        });
+      } else {
+        let QQ = doc(db, "userData", e.id);
+        await updateDoc(QQ, {
+          status: false,
+        });
+      }
+    }catch(error){
+      alert('error in check box',error)
     }
     let arr:any = []
     userData.forEach((elem:any) => {
