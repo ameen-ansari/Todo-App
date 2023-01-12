@@ -122,38 +122,38 @@ export default function Home() {
     }
   };
   let todoChecker = async (e: any) => {
-    let status: boolean = false;
-    let checkBI = document.getElementById(e.id);
-    try{
-      if (checkBI?.checked === true) {
-        let QQ = doc(db, "userData", e.id);
-        await updateDoc(QQ, {
-          status: true,
-        });
-      } else {
-        let QQ = doc(db, "userData", e.id);
-        await updateDoc(QQ, {
-          status: false,
-        });
-      }
-    }catch(error){
-      alert('error in check box',error)
-    }
-    let arr:any = []
-    userData.forEach((elem:any) => {
-      if (elem.id === e.id ) {
-        if (elem.status === true) {
-          elem.status = false
-        }else{
-          elem.status = true
-        }
-        arr.push(elem)
-        setUserData(arr)
-      }else{
-        arr.push(elem)
-        setUserData(arr)
-      }
-    });
+    // let status: boolean = false;
+    // let checkBI = document.getElementById(e.id);
+    // try{
+    //   if (checkBI?.checked === true) {
+    //     let QQ = doc(db, "userData", e.id);
+    //     await updateDoc(QQ, {
+    //       status: true,
+    //     });
+    //   } else {
+    //     let QQ = doc(db, "userData", e.id);
+    //     await updateDoc(QQ, {
+    //       status: false,
+    //     });
+    //   }
+    // }catch(error){
+    //   alert('error in check box',error)
+    // }
+    // let arr:any = []
+    // userData.forEach((elem:any) => {
+    //   if (elem.id === e.id ) {
+    //     if (elem.status === true) {
+    //       elem.status = false
+    //     }else{
+    //       elem.status = true
+    //     }
+    //     arr.push(elem)
+    //     setUserData(arr)
+    //   }else{
+    //     arr.push(elem)
+    //     setUserData(arr)
+    //   }
+    // });
   };
 
   return (
