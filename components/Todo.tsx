@@ -57,7 +57,6 @@ export default function Home() {
       alert("Invalid Input");
     }
   };
-  // let updatebtn1 = document.getElementById("updatebtn1");
 
   useEffect(() => {
     try {
@@ -121,61 +120,35 @@ export default function Home() {
       setinput("");
     }
   };
-  let updatery = async (e: any) => {};
   let todoChecker = async (e: any) => {
-    // let QQ = doc(db, "userData", e.id);
-    // if (e.target.checked === true) {
-    //   await updateDoc(QQ, {
-    //     status: true,
-    //   });
-    // } else {
-    //   await updateDoc(QQ, {
-    //     status: false,
-    //   });
-    // }
-    // if (e.target.checked === true) {
-    //   let QQ = doc(db, "userData", e.id);
-    //   await updateDoc(QQ, {
-    //     status: true,
-    //   });
-    // } else {
-    // }
-    // let status: boolean = false;
-    // let checkBI: any = document.getElementById(e.id)?.checked;
-    const checkBI = document.querySelector(`#${e.id}`)?.checked
-    try {
-      if (checkBI === true) {
-        console.log('checked');
-        let QQ = doc(db, "userData", e.id);
+    let checkBI: any = document.getElementById(e.id);
+    if (checkBI.type === "checkbox") {
+      let QQ = doc(db, "userData", e.id);
+      if (checkBI.checked) {
         await updateDoc(QQ, {
           status: true,
         });
       } else {
-        console.log('Unchecked');
-        
-        let QQ = doc(db, "userData", e.id);
         await updateDoc(QQ, {
           status: false,
         });
       }
-    } catch (error) {
-      alert("error in check box");
-    }
-    let arr: any = [];
-    userData.forEach((elem: any) => {
-      if (elem.id === e.id) {
-        if (elem.status === true) {
-          elem.status = false;
-        } else {
-          elem.status = true;
+      let arr2 : any = []
+      userData.forEach((doc:any)=>{
+        if (doc.id === e.id) {
+          if (doc.status === true) {
+            doc.status = false
+          }
+          else{
+            doc.status = true
+          }
         }
-        arr.push(elem);
-        setUserData(arr);
-      } else {
-        arr.push(elem);
-        setUserData(arr);
-      }
-    });
+        arr2.push(doc)
+        setUserData(arr2)
+      })
+    } else {
+      console.log("Type Is NOt CheckBox");
+    }
   };
 
   return (
@@ -216,12 +189,10 @@ export default function Home() {
                   <div>
                     <input
                       id={item.id}
-                      onChange={()=>todoChecker(item)}
-                      onInput={() => updatery(item)}
+                      onChange={() => todoChecker(item)}
                       type="checkbox"
                       className={styles.checkb}
-                      name={item.id}
-                      // checked={item.status}
+                      checked={item.status}
                     />
                     <p>{item?.description}</p>
                   </div>
