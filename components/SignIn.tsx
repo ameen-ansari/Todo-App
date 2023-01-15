@@ -1,37 +1,37 @@
 import { useState } from "react";
 import logincss from "/styles/SignUp.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../config/Firebase";
 
 export default function SignUp() {
   let [values, setvalues] = useState({
     email: "",
-    userName: "",
-    phoneNumber: "",
     password: "",
-    uid: "",
   });
   function register(e: any) {
     let inputs = { [e.target.name]: e.target.value };
     setvalues({ ...values, ...inputs });
   }
-  async function submit() {
-    //     try {
-    //         let obj = await createUserWithEmailAndPassword(auth, values.email, values.password)
-    //         let user = obj.user.uid
-    //         setvalues(values.uid = user)
-    //         alert('Acount Created Successfully')
-    //         navigate('/')
-    //         await addDoc(collection(db ,"users"),values)
-    //         setvalues({
-    //             email: "",
-    //             userName: "",
-    //             phoneNumber: "",
-    //             password: "",
-    //             uid:""
-    //         })
-    //     } catch (e) {
-    //         alert(e.message)
-    //     }
+  async function submit(e: any) {
+    e.preventDefault();
+    console.log(values);
+
+    try {
+      let obj = await signInWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      setvalues({
+        email: "",
+        password: "",
+      })
+
+      alert("Sign In");
+    } catch (e) {
+      alert(e);
+    }
   }
   return (
     <div className={logincss.container}>
@@ -54,6 +54,9 @@ export default function SignUp() {
                 className="form-control"
                 id="exampleInputEmail1"
                 aria-describedby="emailHelp"
+                name="email"
+                value={values.email}
+                onChange={register}
               />
             </div>
             <div className="mb-3">
@@ -65,12 +68,15 @@ export default function SignUp() {
                 className="form-control"
                 id="exampleInputPassword1"
                 placeholder="Password"
+                name="password"
+                value={values.password}
+                onChange={register}
               />
               <div id="emailHelp" className="form-text mt-1">
                 Don't have a Acount ? SignUP
               </div>
             </div>
-            <button type="submit" className="btn btn-primary">
+            <button onClick={submit} type="submit" className="btn btn-primary">
               Submit
             </button>
           </form>

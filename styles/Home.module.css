@@ -72,13 +72,19 @@
   gap: 1rem; 
   width: 20%;
 }
-/* .todos > div > div span {
-  text-align: center;
-  background-color: #d8e5f7;
-  width: 50%;
-  border-radius: 50%;
-  cursor: pointer;
-} */
+.AuthF {
+  position: absolute;
+  top: 1rem;
+  right:1rem ;
+}
+.AuthF button{
+  width: 125px;
+  height: 30px;
+  border-radius: 9px;
+  font-weight: 700;
+}
+
+
 .manager button {
   width: 20%;
   height: 100%;

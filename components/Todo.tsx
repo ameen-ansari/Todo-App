@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
+import Link from 'next/link';
 import {
   collection,
   addDoc,
@@ -153,6 +154,13 @@ export default function Home() {
 
   return (
     <div className={styles.parent}>
+      <div className={styles.AuthF}>
+        <button>
+          <Link href='/todo/SignUp' style={{textDecoration:'none'}}>
+          SignUp
+          </Link>
+        </button>
+      </div>
       <div className={styles.todo}>
         <div className={styles.manager}>
           <input
