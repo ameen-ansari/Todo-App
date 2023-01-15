@@ -3,8 +3,11 @@ import logincss from "/styles/SignUp.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/Firebase";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function SignUp() {
+  const router = useRouter();
   let [values, setvalues] = useState({
     email: "",
     password: "",
@@ -15,18 +18,17 @@ export default function SignUp() {
   }
   async function submit(e: any) {
     e.preventDefault();
-    console.log(values);
-
     try {
       let obj = await signInWithEmailAndPassword(
         auth,
         values.email,
         values.password
       );
+      router.push("/");
       setvalues({
         email: "",
         password: "",
-      })
+      });
 
       alert("Sign In");
     } catch (e) {
@@ -73,7 +75,9 @@ export default function SignUp() {
                 onChange={register}
               />
               <div id="emailHelp" className="form-text mt-1">
-                Don't have a Acount ? SignUP
+                <Link href="/todo/SignUp" style={{ textDecoration: "none" }}>
+                  Don't have a Acount ? SignUP
+                </Link>
               </div>
             </div>
             <button onClick={submit} type="submit" className="btn btn-primary">

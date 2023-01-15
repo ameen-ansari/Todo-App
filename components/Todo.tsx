@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
-import Link from 'next/link';
+import Link from "next/link";
 import {
   collection,
   addDoc,
@@ -15,7 +15,7 @@ import {
 import img1 from "/Images/edit.png";
 import img2 from "/Images/cancel (1).png";
 import Image from "next/image";
-import { db } from "../config/Firebase";
+import { auth, db } from "../config/Firebase";
 
 export default function Home() {
   const [loader, setLoader] = useState<boolean>(false);
@@ -134,19 +134,18 @@ export default function Home() {
           status: false,
         });
       }
-      let arr2 : any = []
-      userData.forEach((doc:any)=>{
+      let arr2: any = [];
+      userData.forEach((doc: any) => {
         if (doc.id === e.id) {
           if (doc.status === true) {
-            doc.status = false
-          }
-          else{
-            doc.status = true
+            doc.status = false;
+          } else {
+            doc.status = true;
           }
         }
-        arr2.push(doc)
-        setUserData(arr2)
-      })
+        arr2.push(doc);
+        setUserData(arr2);
+      });
     } else {
       console.log("Type Is NOt CheckBox");
     }
@@ -156,10 +155,13 @@ export default function Home() {
     <div className={styles.parent}>
       <div className={styles.AuthF}>
         <button>
-          <Link href='/todo/SignUp' style={{textDecoration:'none'}}>
-          SignUp
+          <Link href="/todo/SignUp" style={{ textDecoration: "none" }}>
+            SignUp
           </Link>
         </button>
+      </div>
+      <div className={styles.AuthStateMent}>
+        <h2>{auth.currentUser?.email?auth.currentUser?.email: 'SignUp Now...'}</h2>
       </div>
       <div className={styles.todo}>
         <div className={styles.manager}>

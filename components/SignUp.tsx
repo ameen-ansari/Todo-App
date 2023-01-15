@@ -2,9 +2,9 @@ import { useState } from "react";
 import logincss from "/styles/SignUp.module.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-// import {auth} from '/config/Firebase.ts'
 import { auth } from "../config/Firebase";
-
+import { useRouter } from "next/router";
+import Link from "next/link";
 export default function SignUp() {
   let [values, setvalues] = useState({
     email: "",
@@ -14,17 +14,21 @@ export default function SignUp() {
     uid: "",
   });
   function register(e: any) {
-
     let inputs = { [e.target.name]: e.target.value };
     setvalues({ ...values, ...inputs });
-    
   }
+  const router = useRouter();
   async function submit(e: any) {
     e.preventDefault();
 
     try {
-      let obj = await createUserWithEmailAndPassword(auth, values.email, values.password)
-      alert('Acount Created Successfully')
+      let obj = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      alert("Acount Created Successfully");
+      router.push("/");
       setvalues({
         email: "",
         userName: "",
@@ -105,7 +109,9 @@ export default function SignUp() {
                 onChange={register}
               />
               <div id="emailHelp" className="form-text">
-                Have a acount ? SignIn
+                <Link href="/todo/SignIn" style={{ textDecoration: "none" }}>
+                  Have a acount ? SignIn
+                </Link>
               </div>
             </div>
             <button onClick={submit} type="submit" className="btn btn-primary">
