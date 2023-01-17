@@ -18,15 +18,14 @@ export default function useSignUp() {
   const router = useRouter();
   async function submit(e: any) {
     e.preventDefault();
-
+let uid :string= ""
     try {
-      await createUserWithEmailAndPassword(
+      let object = await createUserWithEmailAndPassword(
         auth,
         values.email,
         values.password
       )
-      await addDoc(collection(db , 'Users') , values)
-      alert("Acount Created Successfully");
+      uid = object.user.uid
       router.push("/");
       
       setvalues({
@@ -35,8 +34,12 @@ export default function useSignUp() {
         phoneNumber: "",
         password: "",
       });
+      let obj1 = {...values , uid}
+      setvalues(obj1)
+      await addDoc(collection(db , 'Users') , obj1)
     } catch (e) {
       alert(e);
+    }finally{
     }
   }
   return {

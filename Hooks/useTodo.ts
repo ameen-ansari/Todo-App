@@ -8,12 +8,13 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { auth, db } from "../config/Firebase";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function useTodo() {
   const [loader, setLoader] = useState<boolean>(false);
   const [input, setinput] = useState<string>("");
   const [uid, setuid] = useState<string>("");
+  const [authuid, setauthuid] = useState<string>("");
   const [userData, setUserData] = useState<any>([]);
 
   const save = async () => {
@@ -22,28 +23,26 @@ export default function useTodo() {
       if (input.length > 0) {
         try {
           savebtn1.disabled = true;
-          addDoc(collection(db, "userData"), {
+          addDoc(collection(db, auth?.currentUser.uid), {
             description: input,
             status: false,
-          }).then(
-            (doc1) => {
-              setuid(doc1.id);
-              setUserData([
-                ...userData,
-                {
-                  description: input,
-                  id: doc1.id,
-                  status: false,
-                },
-              ]);
-              // if (auth?.currentUser?.uid) {
-              const washingtonRef = doc(db, "userData", doc1.id);
+          }).then((doc1) => {
+            setuid(doc1.id);
+            setUserData([
+              ...userData,
+              {
+                description: input,
+                id: doc1.id,
+                status: false,
+              },
+            ]);
+            if (auth?.currentUser?.uid) {
+              const washingtonRef = doc(db, auth.currentUser?.uid, doc1.id);
               updateDoc(washingtonRef, {
                 id: doc1.id,
               });
             }
-            // }
-          );
+          });
         } catch (error) {
           alert(error);
         } finally {
@@ -59,20 +58,24 @@ export default function useTodo() {
   };
 
   useEffect(() => {
-    try {
-      getDocs(collection(db, "userData")).then((Q) => {
-        setLoader(true);
-        let arr: any = [];
-        Q.forEach((doc) => {
-          arr.push(doc.data());
-          setUserData(arr);
-        });
-      });
-    } catch (error) {
-      alert(error);
-    } finally {
-      setLoader(false);
-    }
+    onAuthStateChanged(auth, (user) => {
+      try {
+        if (user?.uid) {
+          getDocs(collection(db, user?.uid)).then((Q) => {
+            setLoader(true);
+            let arr: any = [];
+            Q.forEach((doc) => {
+              arr.push(doc.data());
+              setUserData(arr);
+            });
+          });
+        }
+      } catch (error) {
+        alert(error);
+      } finally {
+        setLoader(false);
+      }
+    });
   }, []);
   let cancel = async (e: any) => {
     if (auth?.currentUser) {

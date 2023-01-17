@@ -26,8 +26,6 @@ export default function useSignIn() {
         email: "",
         password: "",
       });
-
-      alert("Sign In");
     } catch (e) {
       alert(e);
     }
