@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../config/Firebase";
+import { auth, db } from "../config/Firebase";
 import { useRouter } from "next/router";
+import { addDoc, collection } from "firebase/firestore";
 
 export default function useSignUp() {
-  let [values, setvalues] = useState({
+  let [values, setvalues] = useState<any>({
     email: "",
     userName: "",
     phoneNumber: "",
     password: "",
-    uid: "",
   });
   function register(e: any) {
     let inputs = { [e.target.name]: e.target.value };
@@ -20,28 +20,29 @@ export default function useSignUp() {
     e.preventDefault();
 
     try {
-      let obj = await createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         auth,
         values.email,
         values.password
-      );
+      )
+      await addDoc(collection(db , 'Users') , values)
       alert("Acount Created Successfully");
       router.push("/");
+      
       setvalues({
         email: "",
         userName: "",
         phoneNumber: "",
         password: "",
-        uid: "",
       });
     } catch (e) {
       alert(e);
     }
   }
-  return  {
+  return {
     values,
     setvalues,
     register,
     submit,
-  }
+  };
 }

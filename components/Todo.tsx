@@ -21,21 +21,24 @@ export default function Home() {
     checked,
     updateD,
     todoChecker,
+    logOut
   } = useTodo();
 
   return (
     <div className={styles.parent}>
       <div className={styles.AuthF}>
-        <button>
+        <button onClick={logOut}>
           <Link href="/todo/SignUp" style={{ textDecoration: "none" }}>
-            SignUp
+            {
+              auth?.currentUser?'LogOut':'SignUp'
+            }
           </Link>
         </button>
       </div>
       <div className={styles.AuthStateMent}>
-        <h2>
+        <h3>
           {auth.currentUser?.email ? auth.currentUser?.email : "SignUp Now..."}
-        </h2>
+        </h3>
       </div>
       <div className={styles.todo}>
         <div className={styles.manager}>
