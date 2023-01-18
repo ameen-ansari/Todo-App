@@ -176,6 +176,9 @@ input.checkb {
   gap: 1rem;
 }
 @media (max-width: 600px) {
+  .parent {
+    align-items: flex-start;
+  }
   .todo {
     width: 100%;
   }
