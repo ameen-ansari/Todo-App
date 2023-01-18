@@ -9,13 +9,19 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../config/Firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { type } from "os";
 
 export default function useTodo() {
   const [loader, setLoader] = useState<boolean>(false);
   const [input, setinput] = useState<string>("");
   const [uid, setuid] = useState<string>("");
-  const [authuid, setauthuid] = useState<string>("");
+  const [authChecker, setAuthChecker] = useState<any>({
+    userStatus: "Loading...",
+    aboutUser: "Loading...",
+  });
   const [userData, setUserData] = useState<any>([]);
+  const [statement, setStatement] = useState<string>("Loading...");
+
 
   const save = async () => {
     if (auth?.currentUser) {
@@ -59,27 +65,40 @@ export default function useTodo() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      try {
-        if (user?.uid) {
+      if (user) {
+        setAuthChecker({
+          userStatus: "LogOut",
+          aboutUser: user.email,
+        });
+      } else {
+        setAuthChecker({
+          userStatus: "SignUp",
+          aboutUser: "Please SignUp First...",
+        });
+      }
+      let arr: any = [];
+      if (user?.uid) {
+        try {
           getDocs(collection(db, user?.uid)).then((Q) => {
-            setLoader(true);
-            let arr: any = [];
+            setLoader(true)
             Q.forEach((doc) => {
               arr.push(doc.data());
               setUserData(arr);
             });
           });
+        } catch (error) {
+          alert(error);
+        } finally {
+          setLoader(false)
         }
-      } catch (error) {
-        alert(error);
-      } finally {
-        setLoader(false);
+      }else{
+        setLoader(true)
       }
     });
   }, []);
   let cancel = async (e: any) => {
     if (auth?.currentUser) {
-      await deleteDoc(doc(db, "userData", e.id));
+      await deleteDoc(doc(db, auth.currentUser.uid, e.id));
       let arr: any = [];
       userData.forEach((elem: any) => {
         if (elem.id !== e.id) {
@@ -118,7 +137,7 @@ export default function useTodo() {
             element.description = input;
           }
         });
-        let QQ = doc(db, "userData", uid);
+        let QQ = doc(db, auth.currentUser.uid, uid);
         await updateDoc(QQ, {
           description: input,
         });
@@ -139,7 +158,7 @@ export default function useTodo() {
     let checkBI = document.getElementById(e.id) as HTMLInputElement;
     if (auth?.currentUser) {
       if (checkBI.type === "checkbox") {
-        let QQ = doc(db, "userData", e.id);
+        let QQ = doc(db, auth.currentUser.uid, e.id);
         if (checkBI.checked) {
           await updateDoc(QQ, {
             status: true,
@@ -189,5 +208,9 @@ export default function useTodo() {
     updateD,
     todoChecker,
     logOut,
+    authChecker,
+    setAuthChecker,
+    statement,
+    setStatement,
   };
 }

@@ -8,8 +8,10 @@
 }
 .todo {
   background-color: #d1e4f4;
-  border-radius: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   padding: 3rem;
+  margin-top:25vh ;
   width: 75%;
   display: flex;
   flex-direction: column;
@@ -79,7 +81,7 @@
 .AuthStateMent {
   position: absolute;
   top:15%;
-  left: 5%;
+  left: 25%;
   color: #ffffff;
 }
 
@@ -156,6 +158,13 @@ input.checkb {
 @media (max-width: 600px) {
   .todo{
     width: 100%;
+
+  }
+  .AuthStateMent {
+    position: absolute;
+    top:15%;
+    left: 10%;
+    color: #ffffff;
   }
   .todos > div {
     padding: 1rem;

@@ -21,7 +21,11 @@ export default function Home() {
     checked,
     updateD,
     todoChecker,
-    logOut
+    logOut,
+    authChecker,
+    setAuthChecker,
+    statement,
+    setStatement,
   } = useTodo();
 
   return (
@@ -29,16 +33,12 @@ export default function Home() {
       <div className={styles.AuthF}>
         <button onClick={logOut}>
           <Link href="/todo/SignUp" style={{ textDecoration: "none" }}>
-            {
-              auth?.currentUser?'LogOut':'SignUp'
-            }
+            {authChecker.userStatus}
           </Link>
         </button>
       </div>
       <div className={styles.AuthStateMent}>
-        <h3>
-          {auth.currentUser?.email ? auth.currentUser?.email : "SignUp Now..."}
-        </h3>
+        <h3>{authChecker.aboutUser}</h3>
       </div>
       <div className={styles.todo}>
         <div className={styles.manager}>
@@ -62,13 +62,11 @@ export default function Home() {
           </button>
         </div>
         <div className={styles.todos}>
-          {loader === false ? (
-            <p>Loading...</p>
-          ) : userData.length == 0 ? (
-            <p>Add Some Now...</p>
-          ) : (
-            <p>Todos</p>
-          )}
+          <p className={styles.statement}>
+           {
+            loader === false ? 'Loading...' : userData.length === 0? 'Add Some Thing' : 'Todos'
+           }
+          </p>
           {userData.map((item: any, i: any) => {
             return (
               <div key={i} className={styles.inmap}>
