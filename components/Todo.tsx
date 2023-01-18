@@ -37,10 +37,9 @@ export default function Home() {
           </Link>
         </button>
       </div>
-      <div className={styles.AuthStateMent}>
-        <h3>{authChecker.aboutUser}</h3>
-      </div>
       <div className={styles.todo}>
+        <h2>Todo App</h2>
+        <h2 style={{ color: "blue" ,fontWeight : 700}}>{authChecker.aboutUser}</h2>
         <div className={styles.manager}>
           <input
             type="text"
@@ -62,10 +61,12 @@ export default function Home() {
           </button>
         </div>
         <div className={styles.todos}>
-          <p className={styles.statement}>
-           {
-            loader === false ? 'Loading...' : userData.length === 0? 'Add Some Thing' : 'Todos'
-           }
+          <p id="statement">
+            {loader === false
+              ? "Loading..."
+              : userData.length === 0
+              ? "Add Some Thing"
+              : "Todos"}
           </p>
           {userData.map((item: any, i: any) => {
             return (

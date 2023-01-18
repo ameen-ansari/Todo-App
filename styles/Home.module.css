@@ -11,8 +11,8 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   padding: 3rem;
-  margin-top:25vh ;
   width: 75%;
+  margin-top: 6rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -39,7 +39,6 @@
   outline: 0;
 }
 
-
 .todos {
   display: flex;
   flex-direction: column;
@@ -64,27 +63,47 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem; 
+  gap: 1rem;
   width: 20%;
 }
 .AuthF {
   position: absolute;
   top: 1rem;
-  right:1rem ;
+  right: 1rem;
 }
-.AuthF button{
+.AuthF button {
   width: 125px;
-  height: 30px;
+  height: 40px;
+  font-weight: 700;
+  font-size: 19px;
   border-radius: 9px;
   font-weight: 700;
 }
+.todo h2:nth-child(1){
+  padding-top: .5rem;
+  margin: 1rem 0rem;
+  font-weight: 800;
+  font-size: 32px;
+  color: blue;
+}
 .AuthStateMent {
   position: absolute;
-  top:15%;
+  top: 15%;
   left: 25%;
   color: #ffffff;
 }
+.AuthF {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
 
+.AuthF button {
+  align-self: flex-end;
+}
 .manager button {
   width: 20%;
   height: 100%;
@@ -132,7 +151,8 @@
   align-items: center;
   gap: 0.3rem;
 }
-.intodop2 , .intodop2 > div:nth-child(1)  {
+.intodop2,
+.intodop2 > div:nth-child(1) {
   display: none;
   width: 100% !important;
   justify-content: center;
@@ -156,16 +176,16 @@ input.checkb {
   gap: 1rem;
 }
 @media (max-width: 600px) {
-  .todo{
+  .todo {
     width: 100%;
-
   }
   .AuthStateMent {
     position: absolute;
-    top:15%;
+    top: 15%;
     left: 10%;
     color: #ffffff;
   }
+
   .todos > div {
     padding: 1rem;
     border-radius: 6px;
@@ -174,8 +194,15 @@ input.checkb {
     display: flex;
     justify-content: space-between;
   }
-  .manager{
-    width:85vw;
+  .AuthF button {
+    width: 145px;
+    height: 40px;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 20px;
+  }
+  .manager {
+    width: 85vw;
   }
   .manager input {
     padding: 1rem;
@@ -191,12 +218,13 @@ input.checkb {
     gap: 1rem;
   }
   .intodop1 > div:nth-child(1) {
- width: 100% !important;
+    width: 100% !important;
   }
   .intodop1 > div:nth-child(2) {
- display: none;
+    display: none;
   }
-  .intodop2 , .intodop2 > div:nth-child(1)  {
+  .intodop2,
+  .intodop2 > div:nth-child(1) {
     display: flex;
   }
 }
